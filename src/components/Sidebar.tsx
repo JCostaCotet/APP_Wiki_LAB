@@ -1,9 +1,9 @@
 function Sidebar() {
   return (
-    <aside>
-      <h2>Temes</h2>
+    <aside className="sidebar">
+      <h2 className="sidebar-title">Temes</h2>
 
-      <ul>
+      <ul className="sidebar-list">
         <li>Fabricació</li>
         <li>IPC</li>
         <li>Materials</li>

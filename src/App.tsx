@@ -4,14 +4,17 @@ import DocumentList from './components/DocumentList';
 
 function App() {
   return (
-    <>
+    <div className="app">
       <Header />
 
-      <main>
+      <div className="app-body">
         <Sidebar />
-        <DocumentList />
-      </main>
-    </>
+
+        <main className="app-content">
+          <DocumentList />
+        </main>
+      </div>
+    </div>
   );
 }
 
