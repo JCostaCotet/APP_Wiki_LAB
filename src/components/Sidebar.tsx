@@ -4,10 +4,10 @@ function Sidebar() {
       <h2 className="sidebar-title">Temes</h2>
 
       <ul className="sidebar-list">
-        <li>Fabricació</li>
-        <li>IPC</li>
+        <li>OT-IP's</li>
+        <li>Normes (IPC, UL..)</li>
         <li>Materials</li>
-        <li>Processos</li>
+        <li>Normes Clients</li>
       </ul>
     </aside>
   );
