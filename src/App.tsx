@@ -1,10 +1,18 @@
-function App () {
-    return (
-        <main>
-            <h1>APP Wiki LAB</h1>
-            <p>Electron + React + TypeScript</p>
-        </main>
-    );
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
+import DocumentList from './components/DocumentList';
+
+function App() {
+  return (
+    <>
+      <Header />
+
+      <main>
+        <Sidebar />
+        <DocumentList />
+      </main>
+    </>
+  );
 }
 
-export default App; 
+export default App;
