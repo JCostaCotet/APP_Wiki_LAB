@@ -149,3 +149,56 @@ input {
 .sidebar-sublist li {
   margin-bottom: 8px;
 }
+.sidebar-item {
+  width: 100%;
+  padding: 5px 8px;
+
+  background: none;
+  border: none;
+  border-radius: 4px;
+
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sidebar-item:hover {
+  background-color: #eef2f6;
+}
+
+.sidebar-item.active {
+  background-color: #e2e8f0;
+  font-weight: 600;
+}
+.document-items {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.document-item {
+  margin-bottom: 12px;
+  padding: 16px;
+
+  background-color: #ffffff;
+  border: 1px solid #dfe3e8;
+  border-radius: 6px;
+}
+
+.document-item-title {
+  margin: 0 0 6px;
+
+  font-size: 16px;
+}
+
+.document-item-description {
+  margin: 0 0 10px;
+
+  color: #64748b;
+}
+
+.document-item-type {
+  font-size: 12px;
+  font-weight: 600;
+}

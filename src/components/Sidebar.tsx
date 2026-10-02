@@ -3,9 +3,13 @@ import { categories } from '../data/categories';
 
 interface SidebarProps {
   onSelectCategory: (categoryId: string) => void;
+  selectedCategoryId: string | null;
 }
 
-function Sidebar({ onSelectCategory }: SidebarProps) {
+function Sidebar({
+  onSelectCategory,
+  selectedCategoryId,
+}: SidebarProps) {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
 
   const rootCategories = categories.filter(
@@ -50,6 +54,11 @@ function Sidebar({ onSelectCategory }: SidebarProps) {
                       {children.map((child) => (
                         <li key={child.id}>
                           <button
+                            className={`sidebar-item ${
+                              selectedCategoryId === child.id
+                                ? 'active'
+                                : ''
+                            }`}
                             onClick={() => onSelectCategory(child.id)}
                           >
                             {child.name}
@@ -61,6 +70,11 @@ function Sidebar({ onSelectCategory }: SidebarProps) {
                 </>
               ) : (
                 <button
+                  className={`sidebar-item ${
+                    selectedCategoryId === category.id
+                      ? 'active'
+                      : ''
+                  }`}
                   onClick={() => onSelectCategory(category.id)}
                 >
                   {category.name}

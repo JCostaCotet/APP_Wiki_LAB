@@ -1,10 +1,16 @@
 import { documents } from '../data/documents';
+import { categories } from '../data/categories';
+import DocumentItem from './DocumentItem';
 
 interface DocumentListProps {
   categoryId: string | null;
 }
 
 function DocumentList({ categoryId }: DocumentListProps) {
+  const selectedCategory = categories.find(
+    (category) => category.id === categoryId,
+  );
+
   const filteredDocuments = categoryId
     ? documents.filter(
         (document) => document.categoryId === categoryId,
@@ -13,13 +19,18 @@ function DocumentList({ categoryId }: DocumentListProps) {
 
   return (
     <section className="document-list">
-      <h2>Documents</h2>
+      <h2>
+        {selectedCategory
+          ? `Documents > ${selectedCategory.name}`
+          : 'Documents'}
+      </h2>
 
-      <ul>
+      <ul className="document-items">
         {filteredDocuments.map((document) => (
-          <li key={document.id}>
-            {document.title}
-          </li>
+          <DocumentItem
+            key={document.id}
+            document={document}
+          />
         ))}
       </ul>
     </section>
