@@ -4,9 +4,10 @@ import DocumentItem from './DocumentItem';
 
 interface DocumentListProps {
   categoryId: string | null;
+  onSelectDocument: (documentId: string) => void;
 }
 
-function DocumentList({ categoryId }: DocumentListProps) {
+function DocumentList({ categoryId, onSelectDocument }: DocumentListProps) {
   const selectedCategory = categories.find(
     (category) => category.id === categoryId,
   );
@@ -30,6 +31,7 @@ function DocumentList({ categoryId }: DocumentListProps) {
           <DocumentItem
             key={document.id}
             document={document}
+            onSelect={onSelectDocument}
           />
         ))}
       </ul>
