@@ -124,3 +124,28 @@ input {
 .document-list h2 {
   margin-top: 0;
 }
+
+.sidebar-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  width: 100%;
+  padding: 0;
+
+  background: none;
+  border: none;
+
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sidebar-sublist {
+  margin-top: 10px;
+  padding-left: 30px;
+}
+
+.sidebar-sublist li {
+  margin-bottom: 8px;
+}
