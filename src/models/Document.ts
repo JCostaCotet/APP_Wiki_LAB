@@ -1,10 +1,12 @@
+import type { DocumentType} from './DocumentType';
+
 export interface Document {
   id: string;
   title: string;
   description?: string;
   fileName: string;
   filePath: string;
-  type: 'pdf' | 'doc' | 'docx';
+  type: DocumentType;
   categoryId: string;
   tags: string[];
 }
