@@ -1,12 +1,26 @@
-function DocumentList() {
+import { documents } from '../data/documents';
+
+interface DocumentListProps {
+  categoryId: string | null;
+}
+
+function DocumentList({ categoryId }: DocumentListProps) {
+  const filteredDocuments = categoryId
+    ? documents.filter(
+        (document) => document.categoryId === categoryId,
+      )
+    : documents;
+
   return (
     <section className="document-list">
       <h2>Documents</h2>
 
       <ul>
-        <li>IPC Class 3 - Ring Check</li>
-        <li>Procés de Vies obturades</li>
-        <li>Materials FR4</li>
+        {filteredDocuments.map((document) => (
+          <li key={document.id}>
+            {document.title}
+          </li>
+        ))}
       </ul>
     </section>
   );

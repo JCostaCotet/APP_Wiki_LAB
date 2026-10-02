@@ -1,37 +1,66 @@
-import { useState } from 'react';
+interface SidebarProps {
+  onSelectCategory: (categoryId: string) => void;
+}
 
-function Sidebar() {
-  const [otIpsOpen, setOtIpsOpen] = useState(false);
+import { useState } from 'react';
+import { categories } from '../data/categories';
+
+function Sidebar({ onSelectCategory }: SidebarProps) {
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
+
+  const rootCategories = categories.filter(
+    (category) => !category.parentId,
+  );
+
+  const getChildren = (categoryId: string) =>
+    categories.filter(
+      (category) => category.parentId === categoryId,
+    );
+
+  const toggleCategory = (categoryId: string) => {
+    setOpenCategory(
+      openCategory === categoryId ? null : categoryId,
+    );
+  };
 
   return (
     <aside className="sidebar">
       <h2 className="sidebar-title">Temes</h2>
 
       <ul className="sidebar-list">
-        <li>
-          <button
-            className="sidebar-dropdown"
-            onClick={() => setOtIpsOpen(!otIpsOpen)}
-          >
-            <span>{otIpsOpen ? '▼' : '▶'}</span>
-            OT-IP's
-          </button>
+        {rootCategories.map((category) => {
+          const children = getChildren(category.id);
+          const hasChildren = children.length > 0;
+          const isOpen = openCategory === category.id;
 
-          {otIpsOpen && (
-            <ul className="sidebar-sublist">
-              <li>DPF</li>
-              <li>Coure</li>
-              <li>Màscara</li>
-              <li>Marcatge</li>
-              <li>Mecanitzat</li>
-              <li>Test elèctric</li>
-            </ul>
-          )}
-        </li>
+          return (
+            <li key={category.id}>
+              {hasChildren ? (
+                <>
+                  <button
+                    className="sidebar-dropdown"
+                    onClick={() => toggleCategory(category.id)}
+                  >
+                    <span>{isOpen ? '▼' : '▶'}</span>
+                    {category.name}
+                  </button>
 
-        <li>Normes (IPC, UL...)</li>
-        <li>Materials</li>
-        <li>Normes Clients</li>
+                  {isOpen && (
+                    <ul className="sidebar-sublist">
+                      {children.map((child) => (
+                        <li key={child.id}>
+                          {child.name}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              ) : (
+                category.name
+              )}
+            </li>
+          );
+        })}
       </ul>
     </aside>
   );

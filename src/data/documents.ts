@@ -5,10 +5,10 @@ export const documents: Document[] = [
     id: 'doc-001',
     title: 'Procés DPF',
     description: 'Documentació relacionada amb el procés DPF.',
-    fileName: 'proces-dpf.pdf',
-    filePath: '/documents/proces-dpf.pdf',
+    fileName: 'process-dpf.pdf',
+    filePath: '/documents/process-dpf.pdf',
     type: 'pdf',
-    categoryId: 'ot-ip',
+    categoryId: 'ot-ip-dpf',
     tags: ['dpf', 'ot-ip'],
   },
   {
