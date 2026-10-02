@@ -1,9 +1,9 @@
+import { useState } from 'react';
+import { categories } from '../data/categories';
+
 interface SidebarProps {
   onSelectCategory: (categoryId: string) => void;
 }
-
-import { useState } from 'react';
-import { categories } from '../data/categories';
 
 function Sidebar({ onSelectCategory }: SidebarProps) {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
@@ -49,14 +49,22 @@ function Sidebar({ onSelectCategory }: SidebarProps) {
                     <ul className="sidebar-sublist">
                       {children.map((child) => (
                         <li key={child.id}>
-                          {child.name}
+                          <button
+                            onClick={() => onSelectCategory(child.id)}
+                          >
+                            {child.name}
+                          </button>
                         </li>
                       ))}
                     </ul>
                   )}
                 </>
               ) : (
-                category.name
+                <button
+                  onClick={() => onSelectCategory(category.id)}
+                >
+                  {category.name}
+                </button>
               )}
             </li>
           );
