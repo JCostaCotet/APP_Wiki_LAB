@@ -1,91 +1,73 @@
-import { useState } from 'react';
-import { categories } from '../data/categories';
+﻿import { useState } from 'react';
+import type { Category } from '../models/Category';
 
 interface SidebarProps {
-  onSelectCategory: (categoryId: string) => void;
+  categories: Category[];
+  onSelectCategory: (categoryId: string | null) => void;
   selectedCategoryId: string | null;
 }
 
-function Sidebar({
+export default function Sidebar({
+  categories,
   onSelectCategory,
   selectedCategoryId,
 }: SidebarProps) {
-  const [openCategory, setOpenCategory] = useState<string | null>(null);
-
-  const rootCategories = categories.filter(
-    (category) => !category.parentId,
-  );
-
-  const getChildren = (categoryId: string) =>
-    categories.filter(
-      (category) => category.parentId === categoryId,
-    );
-
-  const toggleCategory = (categoryId: string) => {
-    setOpenCategory(
-      openCategory === categoryId ? null : categoryId,
-    );
-  };
-
-  return (
-    <aside className="sidebar">
-      <h2 className="sidebar-title">Temes</h2>
-
-      <ul className="sidebar-list">
-        {rootCategories.map((category) => {
-          const children = getChildren(category.id);
-          const hasChildren = children.length > 0;
-          const isOpen = openCategory === category.id;
-
-          return (
-            <li key={category.id}>
-              {hasChildren ? (
-                <>
-                  <button
-                    className="sidebar-dropdown"
-                    onClick={() => toggleCategory(category.id)}
-                  >
-                    <span>{isOpen ? '▼' : '▶'}</span>
-                    {category.name}
-                  </button>
-
-                  {isOpen && (
-                    <ul className="sidebar-sublist">
-                      {children.map((child) => (
-                        <li key={child.id}>
-                          <button
-                            className={`sidebar-item ${
-                              selectedCategoryId === child.id
-                                ? 'active'
-                                : ''
-                            }`}
-                            onClick={() => onSelectCategory(child.id)}
-                          >
-                            {child.name}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </>
-              ) : (
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const children = new Map<string | undefined, Category[]>();
+  for (const category of categories) {
+    const siblings = children.get(category.parentId) ?? [];
+    siblings.push(category);
+    children.set(category.parentId, siblings);
+  }
+  function renderBranch(parentId?: string) {
+    return (
+      <ul className={parentId ? 'sidebar-sublist' : 'sidebar-list'}>
+        {(children.get(parentId) ?? []).map((category) => (
+          <li key={category.id}>
+            <div className="category-row">
+              {children.has(category.id) && (
                 <button
-                  className={`sidebar-item ${
-                    selectedCategoryId === category.id
-                      ? 'active'
-                      : ''
-                  }`}
-                  onClick={() => onSelectCategory(category.id)}
+                  className="category-toggle"
+                  aria-label={`${expanded.has(category.id) ? 'Plega' : 'Desplega'} ${category.name}`}
+                  aria-expanded={expanded.has(category.id)}
+                  onClick={() =>
+                    setExpanded((previous) => {
+                      const next = new Set(previous);
+                      if (next.has(category.id)) next.delete(category.id);
+                      else next.add(category.id);
+                      return next;
+                    })
+                  }
                 >
-                  {category.name}
+                  {expanded.has(category.id) ? '▾' : '▸'}
                 </button>
               )}
-            </li>
-          );
-        })}
+              <button
+                className={`sidebar-item ${selectedCategoryId === category.id ? 'active' : ''}`}
+                aria-current={
+                  selectedCategoryId === category.id ? 'page' : undefined
+                }
+                onClick={() => onSelectCategory(category.id)}
+              >
+                {category.name}
+              </button>
+            </div>
+            {expanded.has(category.id) && renderBranch(category.id)}
+          </li>
+        ))}
       </ul>
+    );
+  }
+  return (
+    <aside className="sidebar" aria-label="Categories de documents">
+      <h2 className="sidebar-title">Temes</h2>
+      <button
+        className={`sidebar-item ${selectedCategoryId === null ? 'active' : ''}`}
+        onClick={() => onSelectCategory(null)}
+      >
+        Tots els documents
+      </button>
+      {renderBranch()}
     </aside>
   );
 }
-
-export default Sidebar;

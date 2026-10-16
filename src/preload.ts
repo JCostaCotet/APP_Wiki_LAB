@@ -1,3 +1,15 @@
-// oxlint-disable eslint-plugin-unicorn/no-empty-file
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+import { contextBridge, ipcRenderer } from 'electron';
+import type { SettingsApi } from './models/Settings';
+
+const settings: SettingsApi = {
+  load: (key) => ipcRenderer.invoke('settings:load', key),
+  chooseFolder: () => ipcRenderer.invoke('settings:choose-folder'),
+  save: (key, folderPath) =>
+    ipcRenderer.invoke('settings:save', key, folderPath),
+};
+
+contextBridge.exposeInMainWorld('settings', settings);
+contextBridge.exposeInMainWorld('library', {
+  scan: (key: import('./models/Settings').FolderKey) =>
+    ipcRenderer.invoke('library:scan', key),
+} satisfies import('./models/Library').LibraryApi);
